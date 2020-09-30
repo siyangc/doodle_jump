@@ -1,0 +1,2 @@
+const initialstate = {boardsTypeOrder:[]}
+

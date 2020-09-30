@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
+import Doodler from './Doodler';
 import {useSelector} from 'react-redux';
 export default function Canvas(){
-        const state = {
-            boardWidth:30,        
-        }
         
         const { 
             canvasWidth,
             canvasHeight, 
+            boardWidth,
         } = useSelector(state=>state.size)
 
         const canvasStyle = {
             width: canvasWidth,
             height: canvasHeight,
-            backgroundColor: "green",
+            background: "url(./materials/bg.png)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
             margin: "auto",
-            marginTop: "30px",
+            marginTop: "200px",
             position: 'relative',
             overflow:"hidden"
         }       
@@ -24,7 +25,7 @@ export default function Canvas(){
         //position of each board
         const generateInitBoardsPos = () => {
             let initBoardsPos = [[0,100,50]]
-            for(let i=0;i<9;i++){
+            for(let i=0;i<15;i++){
                 let boardLeftPos = randomBoardLeftPos()
                 let boardRelativeBottomPos = randomBoardRelativeBottomPos()
                 initBoardsPos.push([i+1,boardLeftPos,boardRelativeBottomPos+initBoardsPos[i][2]])
@@ -32,13 +33,13 @@ export default function Canvas(){
             return initBoardsPos         
         }
         const randomBoardLeftPos = () => {
-            return Math.random() * (canvasWidth - state.boardWidth)
+            return Math.random() * (canvasWidth - boardWidth)
         }
         const randomBoardRelativeBottomPos = () => {
             return Math.random() * (60-40) + 40
         }
 
-        const [boardsPos, setBoardsPos] = useState(generateInitBoardsPos());
+        const [boardsPos] = useState(generateInitBoardsPos());
         // useEffect(()=>{
         //      console.log(boardsPos)
         //  },[])
@@ -48,6 +49,7 @@ export default function Canvas(){
                 {boardsPos.map((pos)=>{
                     return (<Board pos={pos} key={pos[0]}/>)
                 })}
+                <Doodler />
             </div>
         )        
     }

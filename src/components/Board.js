@@ -11,10 +11,11 @@ export default function Board(props) {
     const boardStyle = {
         width: boardWidth,
         height: boardHeight,
-        backgroundColor: "yellow",
+        backgroundColor: "green",
         position: "absolute",
         bottom: props.pos[2],
-        left: props.pos[1]
+        left: props.pos[1],
+        borderRadius: "25px 20px 25px 20px"
     }
 
     return (

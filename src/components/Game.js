@@ -5,7 +5,7 @@ export default class Game extends Component {
     render() {
         return (
             <div>
-                <Canvas />
+                <Canvas />           
             </div>
         )
     }
