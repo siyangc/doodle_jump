@@ -1,55 +1,56 @@
-import React, { Component } from 'react'
-import Board from './Board'
-export default class Canvas extends Component {
-        state = {
-            boardsPos:[],
-            doodleJumpHeight:60,
+import React, { useState, useEffect } from 'react';
+import Board from './Board';
+//import {useSelector} from 'react-redux';
+export default function Canvas(){
+        const state = {
             canvasWidth:300,
             boardWidth:30,        
         }
         
-        canvasStyle = {
-            width: this.state.canvasWidth + 'px',
+        //const canvasWidth = useSelector(state=>state.size.canvasWidth)
+        const canvasStyle = {
+            width: '300px',
             height: "450px",
             backgroundColor: "green",
             margin: "auto",
             marginTop: "30px",
             position: 'relative',
             overflow:"hidden"
-        }
-        componentDidMount(){
-            this.generateInitBoardsPos()
-        }
+        }       
 
         //position of each board
-        generateInitBoardsPos = () => {
+        const generateInitBoardsPos = () => {
             let initBoardsPos = [[0,100,50]]
             for(let i=0;i<9;i++){
-                let boardLeftPos = this.randomBoardLeftPos()
-                let boardRelativeBottomPos = this.randomBoardRelativeBottomPos()
+                let boardLeftPos = randomBoardLeftPos()
+                let boardRelativeBottomPos = randomBoardRelativeBottomPos()
                 initBoardsPos.push([i+1,boardLeftPos,boardRelativeBottomPos+initBoardsPos[i][2]])
-            }            
-            this.setState({
-                boardsPos: initBoardsPos
-            },()=>{
-                console.log(this.state.boardsPos)
-            })
+            }  
+            return initBoardsPos
+            //setBoardsPos([initBoardsPos])          
+            
         }
-        randomBoardLeftPos = () => {
-            return Math.random() * (this.state.canvasWidth - this.state.boardWidth)
+        const randomBoardLeftPos = () => {
+            return Math.random() * (state.canvasWidth - state.boardWidth)
         }
-        randomBoardRelativeBottomPos = () => {
-            return Math.random() * (this.state.doodleJumpHeight-40) + 40
+        const randomBoardRelativeBottomPos = () => {
+            return Math.random() * (60-40) + 40
         }
 
-        render() {
-            return (
-                <div style={this.canvasStyle}>
-                    {this.state.boardsPos.map((pos)=>{
-                        return (<Board pos={pos} key={pos[0]}/>)
-                    })}
-                </div>
-            )
-        }
+        const [boardsPos, setBoardsPos] = useState(generateInitBoardsPos());
+        useEffect(()=>{
+            //generateInitBoardsPos()         
+             console.log(boardsPos)
+             console.log('haha')
+         },[])
+        
+        return (
+            <div style={canvasStyle}>
+                {boardsPos.map((pos)=>{
+                    return (<Board pos={pos} key={pos[0]}/>)
+                })}
+            </div>
+        )
+        
     }
 
