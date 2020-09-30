@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import adjustReducer from './adjustReducer'
+import {adjustSizeReducer} from './adjustSizeReducer'
 
 export default combineReducers({
-    size: adjustReducer
+    size: adjustSizeReducer
 });

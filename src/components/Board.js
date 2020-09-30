@@ -1,23 +1,28 @@
-import React, { Component } from 'react'
+import React from 'react'
+import {useSelector} from 'react-redux';
 
-export default class Board extends Component {
+export default function Board(props) {
 
-    boardStyle = {
-        width: "30px",
-        height: "10px",
+    const { 
+        boardWidth,
+        boardHeight, 
+    } = useSelector(state=>state.size)
+
+    const boardStyle = {
+        width: boardWidth,
+        height: boardHeight,
         backgroundColor: "yellow",
         position: "absolute",
-        bottom:this.props.pos[2],
-        left: this.props.pos[1]
+        bottom: props.pos[2],
+        left: props.pos[1]
     }
 
-    render() {
-        return (
-            <div  style={this.boardStyle}>
-                
-            </div>
-        )
-    }
+    return (
+        <div style={boardStyle}>
+            
+        </div>
+    )
 }
+
 
 

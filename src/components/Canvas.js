@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
-//import {useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 export default function Canvas(){
         const state = {
-            canvasWidth:300,
             boardWidth:30,        
         }
         
-        //const canvasWidth = useSelector(state=>state.size.canvasWidth)
+        const { 
+            canvasWidth,
+            canvasHeight, 
+        } = useSelector(state=>state.size)
+
         const canvasStyle = {
-            width: '300px',
-            height: "450px",
+            width: canvasWidth,
+            height: canvasHeight,
             backgroundColor: "green",
             margin: "auto",
             marginTop: "30px",
@@ -26,23 +29,19 @@ export default function Canvas(){
                 let boardRelativeBottomPos = randomBoardRelativeBottomPos()
                 initBoardsPos.push([i+1,boardLeftPos,boardRelativeBottomPos+initBoardsPos[i][2]])
             }  
-            return initBoardsPos
-            //setBoardsPos([initBoardsPos])          
-            
+            return initBoardsPos         
         }
         const randomBoardLeftPos = () => {
-            return Math.random() * (state.canvasWidth - state.boardWidth)
+            return Math.random() * (canvasWidth - state.boardWidth)
         }
         const randomBoardRelativeBottomPos = () => {
             return Math.random() * (60-40) + 40
         }
 
         const [boardsPos, setBoardsPos] = useState(generateInitBoardsPos());
-        useEffect(()=>{
-            //generateInitBoardsPos()         
-             console.log(boardsPos)
-             console.log('haha')
-         },[])
+        // useEffect(()=>{
+        //      console.log(boardsPos)
+        //  },[])
         
         return (
             <div style={canvasStyle}>
@@ -50,7 +49,6 @@ export default function Canvas(){
                     return (<Board pos={pos} key={pos[0]}/>)
                 })}
             </div>
-        )
-        
+        )        
     }
 
