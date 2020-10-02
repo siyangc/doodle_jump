@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import {adjustSizeReducer} from './adjustSizeReducer';
-import {doodlerBehaviorReducer} from './doodlerBehaviorReducer'
+import {sizeReducer} from './sizeReducer';
+import { doodlerReducer } from './doodlerReducer'
+import {platformsReducer} from './platformsReducer'
 
 export default combineReducers({
-    size: adjustSizeReducer,
-    doodler: doodlerBehaviorReducer
+    size: sizeReducer,
+    doodler: doodlerReducer,
+    platforms: platformsReducer
 });

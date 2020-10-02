@@ -4,13 +4,13 @@ import {useSelector} from 'react-redux';
 export default function Board(props) {
 
     const { 
-        boardWidth,
-        boardHeight, 
+        platformWidth,
+        platformHeight, 
     } = useSelector(state=>state.size)
 
-    const boardStyle = {
-        width: boardWidth,
-        height: boardHeight,
+    const platformStyle = {
+        width: platformWidth,
+        height: platformHeight,
         backgroundColor: "green",
         position: "absolute",
         bottom: props.pos[2],
@@ -19,7 +19,7 @@ export default function Board(props) {
     }
 
     return (
-        <div style={boardStyle}>
+        <div style={platformStyle}>
             
         </div>
     )
