@@ -35,6 +35,18 @@ export const doodlerReducer = (state = initialState,action) => {
                 ...state,
                 doodlerV: 10
             }
+
+        case 'LEFT_TO_RIGHT':
+            return {
+                ...state,
+                doodlerX: 300
+            }
+        
+        case 'RIGHT_TO_LEFT':
+            return {
+                ...state,
+                doodlerX: - action.payload
+            }
         default:
             return state;
     }

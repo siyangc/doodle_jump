@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Platform from './Platform';
 import Doodler from './Doodler';
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 export default function Canvas(){
         const canvasStyle = {
@@ -15,13 +15,6 @@ export default function Canvas(){
             position: 'relative',
             overflow:"hidden"
         }       
-
-        //position of each board
-        
-
-        const dispatch = useDispatch()
-        
-        
         
         const platforms = useSelector(state=>state.platforms)
         return (

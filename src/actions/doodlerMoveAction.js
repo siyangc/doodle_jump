@@ -21,3 +21,16 @@ export const switchToJump = () => {
         type: 'SWITCH_TO_JUMP'
     }
 }
+
+export const leftToRight = () => {
+    return {
+        type: 'LEFT_TO_RIGHT'
+    }
+}
+
+export const rightToLeft = (width) => {
+    return {
+        type: 'RIGHT_TO_LEFT',
+        payload: width
+    }
+}

@@ -1,8 +1,7 @@
-import React, { useState, useEffect }from 'react'
-import {useSelector, useDispatch} from 'react-redux';
-import {normal,down} from '../actions/doodlerMoveAction';
+import React from 'react'
+import {useSelector} from 'react-redux';
+
 export default function Doodler() {
-    const dispatch = useDispatch();
 
     const {
         doodlerX,
