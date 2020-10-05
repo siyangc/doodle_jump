@@ -9,3 +9,9 @@ export const right = () => {
         type: 'RIGHT'
     }
 }
+
+export const reset = () => {
+    return {
+        type: 'RESET'
+    }
+}

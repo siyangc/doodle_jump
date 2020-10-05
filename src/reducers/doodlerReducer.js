@@ -47,6 +47,24 @@ export const doodlerReducer = (state = initialState,action) => {
                 ...state,
                 doodlerX: - action.payload
             }
+
+        case 'STOP_LEFT':
+            return {
+                ...state,
+                doodlerX: state.doodlerX - 4,
+                doodlerV: state.doodlerV - state.doodlerA
+            }
+        case 'STOP_RIGHT':
+            return {
+                ...state,
+                doodlerX: state.doodlerX + 4,
+                doodlerV: state.doodlerV - state.doodlerA
+            }
+        case 'STOP':
+            return {
+                ...state,
+                doodlerV: state.doodlerV - state.doodlerA
+            }
         default:
             return state;
     }

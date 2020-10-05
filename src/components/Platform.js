@@ -13,8 +13,8 @@ export default function Board(props) {
         height: platformHeight,
         backgroundColor: "green",
         position: "absolute",
-        bottom: props.pos[2],
-        left: props.pos[1],
+        bottom: props.pos[1],
+        left: props.pos[0],
         borderRadius: "25px 20px 25px 20px"
     }
 

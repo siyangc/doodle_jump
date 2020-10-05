@@ -2,8 +2,11 @@ import React from 'react';
 import Platform from './Platform';
 import Doodler from './Doodler';
 import {useSelector} from 'react-redux';
+export default function Canvas(props){
+        const {
+            platformsOrder
+        } = useSelector(state=> state.platforms)
 
-export default function Canvas(){
         const canvasStyle = {
             width: "300px",
             height: "450px",
@@ -15,12 +18,11 @@ export default function Canvas(){
             position: 'relative',
             overflow:"hidden"
         }       
-        
-        const platforms = useSelector(state=>state.platforms)
+
         return (
             <div style={canvasStyle}>
-                {platforms.map((pos)=>{
-                    return (<Platform pos={pos} key={pos[0]}/>)
+                {platformsOrder.map((pos)=>{
+                    return (<Platform pos={pos}/>)
                 })}
                 <Doodler />
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux';
 import {
     normalJumpLeft,
@@ -6,10 +6,14 @@ import {
     normalJump, 
     switchToJump, 
     leftToRight, 
-    rightToLeft
+    rightToLeft,
+    stopLeft,
+    stopRight,
+    stop
 } from '../actions/doodlerMoveAction'
 import {left,right} from '../actions/key.js'
-import {initPlatforms} from '../actions/platforms'
+import {initPlatforms, platformsFall} from '../actions/platforms'
+
 import Canvas from './Canvas'
 
 export default function Game() {
@@ -27,36 +31,42 @@ export default function Game() {
         doodlerHeight
     } = useSelector(state=> state.size)
 
-    const platforms = useSelector(state=> state.platforms)
+    const {
+        platformsOrder
+    } = useSelector(state=> state.platforms)
     const keyCode = useSelector(state=>state.keyCode)
+
+    
     const generateInitPlatforms = () => {
-        let initPlatforms = [[0,100,50]]
-        for(let i=0;i<15;i++){
+        let initPlatforms = [[100,50]]
+        for(let i=0;i<10;i++){
             let platformLeftPos = randomPlatformLeftPos()
             let platformRelativeBottomPos = randomPlatformRelativeBottomPos()
-            initPlatforms.push([i+1,platformLeftPos,platformRelativeBottomPos+initPlatforms[i][2]])
+            initPlatforms.push([platformLeftPos,platformRelativeBottomPos+initPlatforms[i][1]])
         }  
         return initPlatforms      
     }
     const randomPlatformLeftPos = () => {
-        return Math.random() * (360)
+        return Math.random() * (260)
     }
     const randomPlatformRelativeBottomPos = () => {
         return Math.random() * 20 + 50
     }
-
+    const generatePlatforms = () => {
+        return [randomPlatformLeftPos(),randomPlatformRelativeBottomPos()]
+    }
 
     useEffect(()=>{
         dispatch(initPlatforms(generateInitPlatforms()))
     },[])
 
     const checkCollision = () => {
-        platforms.forEach((platform)=>{
+        platformsOrder.forEach((platform)=>{
             if(
-                doodlerX<platform[1]+platformWidth &&
-                doodlerX+doodlerWidth>platform[1] &&
-                doodlerY <platform[2]+platformHeight &&
-                doodlerY >platform[2] &&
+                doodlerX<platform[0]+platformWidth &&
+                doodlerX+doodlerWidth>platform[0] &&
+                doodlerY <platform[1]+platformHeight &&
+                doodlerY >platform[1] &&
                 doodlerV <0
             ) {
                 dispatch(switchToJump())
@@ -69,36 +79,74 @@ export default function Game() {
             dispatch(rightToLeft(doodlerWidth))
         }
     }   
-    const keyDetect = (e) => {
-        if(e.keyCode===37){
-            dispatch(left())
-        }else if(e.keyCode===39){
-            dispatch(right())
+    const keyDown = (e) => {
+        const a = setInterval(()=>{
+            if(e.keyCode===37){
+                dispatch(left())                
+            }else if(e.keyCode===39){
+                dispatch(right())                
+            }
+        },16)
+            
+        document.onkeyup = () => {
+            clearInterval(a)
+        }
+        document.onkeydown = () => {
+            clearInterval(a)
         }
     }
-    const doodlerMove = (keyCode) => {
+    const doodlerNormalMove = (keyCode) => {
         if(keyCode === 37){
             dispatch(normalJumpLeft())
         }else if (keyCode === 39){
             dispatch(normalJumpRight())
-        }  else{
+        }else{
             dispatch(normalJump())
         }
     }
+    
+    const platformsMove = () => {
+        platformsOrder.forEach((platform)=>{
+            platform[1] -= doodlerV
+            if(platform[1]<-platformHeight){
+                platformsOrder.shift()
+            }
+        })
+
+        if(platformsOrder.length<10){
+            platformsOrder.push(
+                [
+                    randomPlatformLeftPos(),
+                    randomPlatformRelativeBottomPos() + platformsOrder[platformsOrder.length-1][1]
+                ]
+            )
+        }
+        dispatch(platformsFall(platformsOrder))
+    }
+    const doodlerMove = (keyCode) => {
+        if(doodlerY>230 && doodlerV>0){
+            //doodlerStop
+            if(keyCode === 37){
+                dispatch(stopLeft())
+            }else if (keyCode === 39){
+                dispatch(stopRight())
+            }else{
+                dispatch(stop())
+            }
+            platformsMove()
+        }else{
+            doodlerNormalMove(keyCode)
+        }
+    }
     useEffect(()=>{     
-        //checkCollision()
-        //keyDetect()
+        
+        window.addEventListener('keydown',keyDown)
+
         const game = setInterval(()=>{
+            
             checkCollision()
             doodlerMove(keyCode)
-
-            //doodlerMove(keyDetect())
-
-            //Make sure X-Y move together!!!
-            
-            //platformsMove()
-            //switchToJump()
-            //dispatch(normalJump())      
+    
         },16)
 
         const gameOver = doodlerY<0? true: false
@@ -108,11 +156,14 @@ export default function Game() {
 
         return ()=>{
             clearInterval(game)
+            window.removeEventListener('keydown',keyDown)
         }
-    },[doodlerX,doodlerY,doodlerV,platformHeight,platformWidth,doodlerWidth,doodlerHeight,platforms,keyCode])
+    },[doodlerX,doodlerY,doodlerV,platformHeight,platformWidth,doodlerWidth,doodlerHeight,platformsOrder,keyCode])
     return (
-        <div onKeyDown ={keyDetect} tabIndex="0">
-            <Canvas />  
+        <div>
+            <Canvas 
+                platformsOrder={platformsOrder} 
+            />  
         </div>
     )
 }

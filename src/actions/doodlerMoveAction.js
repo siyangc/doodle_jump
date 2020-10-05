@@ -34,3 +34,21 @@ export const rightToLeft = (width) => {
         payload: width
     }
 }
+
+export const stopLeft = () => {
+    return {
+        type: 'STOP_LEFT'
+    }
+}
+
+export const stopRight = () => {
+    return {
+        type: 'STOP_RIGHT'
+    }
+}
+
+export const stop = () => {
+    return {
+        type: 'STOP'
+    }
+}

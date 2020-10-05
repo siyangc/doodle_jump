@@ -4,3 +4,10 @@ export const initPlatforms = (platforms) => {
         payload: platforms
     }
 }
+
+export const platformsFall = (platforms) => {
+    return {
+        type: "PLATFORMS_FALL",
+        payload: platforms
+    }
+}
