@@ -86,7 +86,7 @@ export default function Game() {
             }else if(e.keyCode===39){
                 dispatch(right())                
             }
-        },16)
+        },1)
             
         document.onkeyup = () => {
             clearInterval(a)
