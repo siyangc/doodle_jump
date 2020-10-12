@@ -13,7 +13,7 @@ import {
 } from '../actions/doodlerMoveAction'
 import {left,right} from '../actions/key.js'
 import {initPlatforms, platformsFall} from '../actions/platforms'
-
+import {addScore} from '../actions/score'
 import Canvas from './Canvas'
 
 export default function Game() {
@@ -36,7 +36,7 @@ export default function Game() {
     } = useSelector(state=> state.platforms)
     const keyCode = useSelector(state=>state.keyCode)
 
-    
+    const score = useSelector(state=>state.score)
     const generateInitPlatforms = () => {
         let initPlatforms = [[100,50]]
         for(let i=0;i<10;i++){
@@ -51,9 +51,6 @@ export default function Game() {
     }
     const randomPlatformRelativeBottomPos = () => {
         return Math.random() * 20 + 50
-    }
-    const generatePlatforms = () => {
-        return [randomPlatformLeftPos(),randomPlatformRelativeBottomPos()]
     }
 
     useEffect(()=>{
@@ -110,7 +107,9 @@ export default function Game() {
             platform[1] -= doodlerV
             if(platform[1]<-platformHeight){
                 platformsOrder.shift()
+                dispatch(addScore())
             }
+            
         })
 
         if(platformsOrder.length<10){
@@ -146,7 +145,7 @@ export default function Game() {
             
             checkCollision()
             doodlerMove(keyCode)
-    
+            
         },16)
 
         const gameOver = doodlerY<0? true: false
@@ -164,6 +163,7 @@ export default function Game() {
             <Canvas 
                 platformsOrder={platformsOrder} 
             />  
+            <p style={{textAlign:'center'}}>Your Score: {score}</p>
         </div>
     )
 }
