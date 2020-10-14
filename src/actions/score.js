@@ -4,8 +4,3 @@ export const addScore = () => {
     }
 }
 
-export const getScore = () => {
-    return {
-        type: 'GET'
-    }
-}

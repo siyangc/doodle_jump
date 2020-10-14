@@ -1,11 +1,9 @@
 import React from 'react';
-import Platform from './Platform';
-import Doodler from './Doodler';
-import {useSelector} from 'react-redux';
-export default function Canvas(props){
-        const {
-            platformsOrder
-        } = useSelector(state=> state.platforms)
+import Game from './Game';
+import {Provider} from 'react-redux';
+import store from '../store';
+export default function Canvas(props){        
+
 
         const canvasStyle = {
             width: "300px",
@@ -20,12 +18,11 @@ export default function Canvas(props){
         }       
 
         return (
+        <Provider store={store}>    
             <div style={canvasStyle}>
-                {platformsOrder.map((pos)=>{
-                    return (<Platform pos={pos}/>)
-                })}
-                <Doodler />
+                <Game />                                      
             </div>
+        </Provider>
         )        
     }
 

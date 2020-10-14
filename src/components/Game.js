@@ -14,7 +14,8 @@ import {
 import {left,right} from '../actions/key.js'
 import {initPlatforms, platformsFall} from '../actions/platforms'
 import {addScore} from '../actions/score'
-import Canvas from './Canvas'
+import Platform from './Platform';
+import Doodler from './Doodler';
 
 export default function Game() {
     const dispatch = useDispatch();
@@ -35,7 +36,6 @@ export default function Game() {
         platformsOrder
     } = useSelector(state=> state.platforms)
     const keyCode = useSelector(state=>state.keyCode)
-
     const score = useSelector(state=>state.score)
     const generateInitPlatforms = () => {
         let initPlatforms = [[100,50]]
@@ -160,10 +160,11 @@ export default function Game() {
     },[doodlerX,doodlerY,doodlerV,platformHeight,platformWidth,doodlerWidth,doodlerHeight,platformsOrder,keyCode])
     return (
         <div>
-            <Canvas 
-                platformsOrder={platformsOrder} 
-            />  
-            <p style={{textAlign:'center'}}>Your Score: {score}</p>
+            {platformsOrder.map((pos)=>{
+                    return (<Platform pos={pos}/>)
+            })}
+              <Doodler />         
+              <p style = {{textAlign: 'center'}}>your score: {score}</p>         
         </div>
     )
 }
